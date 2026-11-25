@@ -1,19 +1,32 @@
 
+
 import joblib
 import numpy as np
 import tensorflow as tf
 import pandas as pd
 
+# ==================================================
 # 1. Load the trained ANN model
-model = tf.keras.models.load_model("ann_model.keras")
+# ==================================================
 
+model = tf.keras.models.load_model(
+    "ann_model.keras",
+    compile=False
+)
+
+# ==================================================
 # 2. Load saved preprocessing objects
+# ==================================================
+
 label_encoder = joblib.load("label_encoder.pkl")
 one_hot_encoder = joblib.load("one_hot_encoder.pkl")
 scaler = joblib.load("scaler.pkl")
 
 
+# ==================================================
 # 3. Create prediction function
+# ==================================================
+
 def predict_churn(
     credit_score,
     geography,
@@ -61,7 +74,10 @@ def predict_churn(
     )
 
     # Remove original Geography column
-    customer_data = customer_data.drop("Geography", axis=1)
+    customer_data = customer_data.drop(
+        "Geography",
+        axis=1
+    )
 
     # Combine encoded Geography features
     customer_data = pd.concat(
@@ -106,20 +122,25 @@ def predict_churn(
     return prediction, probability
 
 
+# ==================================================
 # 4. Test with one sample customer
-result, probability = predict_churn(
-    credit_score=650,
-    geography="France",
-    gender="Female",
-    age=35,
-    tenure=5,
-    balance=60000,
-    num_of_products=2,
-    has_cr_card=1,
-    is_active_member=1,
-    estimated_salary=50000
-)
+# ==================================================
 
-print("\nCustomer Churn Prediction:")
-print(result)
-print(f"Churn Probability: {probability:.2%}")
+if __name__ == "__main__":
+
+    result, probability = predict_churn(
+        credit_score=650,
+        geography="France",
+        gender="Female",
+        age=35,
+        tenure=5,
+        balance=60000,
+        num_of_products=2,
+        has_cr_card=1,
+        is_active_member=1,
+        estimated_salary=50000
+    )
+
+    print("\nCustomer Churn Prediction:")
+    print(result)
+    print(f"Churn Probability: {probability:.2%}")
