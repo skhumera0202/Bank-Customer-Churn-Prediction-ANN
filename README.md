@@ -1,78 +1,133 @@
 
-# Bank Customer Churn Prediction using Artificial Neural Network (ANN)
+# 🏦 Bank Customer Churn Prediction using Artificial Neural Network (ANN)
 
-## Project Overview
+An end-to-end deep learning project that uses an Artificial Neural Network (ANN) to predict the likelihood of bank customer churn, with an interactive Streamlit application for generating predictions.
 
-This project uses an Artificial Neural Network (ANN) to predict whether a bank customer is likely to leave the bank or continue using its services.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11-blue?logo=python" alt="Python">
+  <img src="https://img.shields.io/badge/TensorFlow-2.15-orange?logo=tensorflow" alt="TensorFlow">
+  <img src="https://img.shields.io/badge/Deep%20Learning-ANN-red" alt="ANN">
+  <img src="https://img.shields.io/badge/Streamlit-Web%20App-FF4B4B?logo=streamlit" alt="Streamlit">
+  <img src="https://img.shields.io/badge/Status-Completed%20Locally-success" alt="Project Status">
+</p>
 
-The goal is to build a machine learning classification model that can help identify customers who may be at risk of leaving.
+---
 
-The project covers the complete machine learning workflow, from data exploration and preprocessing to model training, evaluation, prediction, and a Streamlit web application.
+## 📌 Project Overview
 
-## Problem Statement
+Customer churn is an important challenge in the banking industry. Identifying customers who may leave a bank can help businesses understand customer behaviour and develop better customer retention strategies.
 
-Customer churn is an important challenge for banks. Identifying customers who are likely to leave can help businesses understand customer behavior and improve retention strategies.
+This project uses an **Artificial Neural Network (ANN)** built with TensorFlow and Keras to estimate whether a bank customer is likely to leave or continue using banking services.
 
-This project uses customer information such as credit score, age, geography, balance, and account activity to estimate the likelihood of churn.
+The project covers the complete machine learning workflow:
 
-## Technologies Used
+- Data exploration and analysis
+- Data preprocessing and feature engineering
+- ANN model development and training
+- Model evaluation
+- Customer churn prediction
+- Interactive Streamlit web application
 
-- Python
-- TensorFlow
-- Keras
-- Pandas
-- NumPy
-- Scikit-learn
-- Matplotlib
-- Joblib
-- Streamlit
+## 🎯 Problem Statement
 
-## Dataset
+The objective is to develop a binary classification model that predicts customer churn based on information such as:
 
-The project uses the Bank Customer Churn Modelling dataset.
+- Credit Score
+- Geography
+- Gender
+- Age
+- Account Tenure
+- Account Balance
+- Number of Bank Products
+- Credit Card Ownership
+- Active Membership
+- Estimated Salary
 
-- Total records: 10,000
-- Total original columns: 14
-- Target column: `Exited`
-- `0`: Customer stays
-- `1`: Customer leaves
+**Target Variable:**
 
-Dataset source:
+| Value | Meaning |
+|---|---|
+| 0 | Customer stays |
+| 1 | Customer leaves |
 
-https://github.com/pdt0208/Banking-Churn-Modelling/blob/main/Churn_Modelling.csv
+## 🛠️ Technologies Used
 
-## Project Workflow
+| Technology | Purpose |
+|---|---|
+| Python | Programming language |
+| TensorFlow | Deep learning framework |
+| Keras | ANN model development |
+| Pandas | Data manipulation |
+| NumPy | Numerical operations |
+| Scikit-learn | Preprocessing and evaluation |
+| Matplotlib | Data visualization |
+| Joblib | Saving training history and utilities |
+| Streamlit | Interactive web application |
 
-1. Data Exploration
-2. Data Preprocessing
-3. Feature Encoding
-4. Feature Scaling
-5. ANN Model Building
-6. Model Training
-7. Model Evaluation
-8. Prediction System
-9. Streamlit Web Application
+## 📂 Dataset
 
-## Data Preprocessing
+**Dataset:** Bank Customer Churn Modelling
+
+- Total Records: 10,000
+- Original Columns: 14
+- Target Column: `Exited`
+- Problem Type: Binary Classification
+
+**Dataset Source:**  
+[Bank Customer Churn Modelling Dataset](https://github.com/pdt0208/Banking-Churn-Modelling/blob/main/Churn_Modelling.csv)
+
+The dataset contains customer demographic and banking information used to train the ANN model.
+
+## 🔄 Project Workflow
+
+```mermaid
+flowchart TD
+    A["Bank Customer Churn Dataset"] --> B["Data Exploration"]
+    B --> C["Data Preprocessing"]
+    C --> D["Feature Encoding"]
+    D --> E["Feature Scaling"]
+    E --> F["Train-Test Split"]
+    F --> G["ANN Model Training"]
+    G --> H["Model Evaluation"]
+    H --> I["Trained Model and Preprocessors"]
+    I --> J["Prediction Module"]
+    J --> K["Streamlit Web Application"]
+```
+
+## 🧹 Data Preprocessing
 
 The following preprocessing steps were performed:
 
-- Removed unnecessary columns: `RowNumber`, `CustomerId`, and `Surname`.
-- Encoded the Gender column using Label Encoding.
-- Applied One-Hot Encoding to the Geography column.
-- Split the dataset into training and testing sets (80:20).
-- Applied StandardScaler to scale numerical features.
-- Saved the encoders and scaler for future predictions.
+1. Removed unnecessary columns:
+   - `RowNumber`
+   - `CustomerId`
+   - `Surname`
 
-After preprocessing:
+2. Applied Label Encoding to the `Gender` column.
 
-- Training samples: 8,000
-- Testing samples: 2,000
-- Input features: 12
+3. Applied One-Hot Encoding to the `Geography` column.
 
-## ANN Model Architecture
+4. Divided the dataset into training and testing sets using an 80:20 split.
 
-The ANN model was built using TensorFlow and Keras.
+5. Applied StandardScaler to standardize numerical features.
+
+6. Saved the fitted encoders and scaler for use during prediction.
+
+**Preprocessing Summary:**
+
+| Description | Result |
+|---|---:|
+| Training Samples | 8,000 |
+| Testing Samples | 2,000 |
+| Input Features | 12 |
+| Training Split | 80% |
+| Testing Split | 20% |
+
+The preprocessing objects were saved so that new customer information receives the same transformations as the training data.
+
+## 🧠 ANN Model Architecture
+
+The Artificial Neural Network was developed using TensorFlow and Keras.
 
 | Layer | Neurons | Activation |
 |---|---:|---|
@@ -83,17 +138,23 @@ The ANN model was built using TensorFlow and Keras.
 
 ### Model Configuration
 
-- Optimizer: Adam
-- Loss Function: Binary Crossentropy
-- Evaluation Metric: Accuracy
-- Batch Size: 32
-- Maximum Epochs: 50
-- Early Stopping: Enabled
-- Class Weighting: Applied to address class imbalance
+| Parameter | Value |
+|---|---|
+| Optimizer | Adam |
+| Loss Function | Binary Crossentropy |
+| Evaluation Metric | Accuracy |
+| Batch Size | 32 |
+| Maximum Epochs | 50 |
+| Early Stopping | Enabled |
+| Class Weighting | Applied |
 
-## Model Evaluation
+**Class weighting** was used to address the imbalance between customers who stayed and customers who left.
 
-The model was evaluated on the test dataset containing 2,000 records.
+Early Stopping was used to monitor validation loss and restore the best model weights.
+
+## 📊 Model Evaluation
+
+The model was evaluated using the test dataset containing 2,000 customer records.
 
 ### Evaluation Results
 
@@ -107,16 +168,22 @@ The model was evaluated on the test dataset containing 2,000 records.
 
 ### Confusion Matrix
 
-| | Predicted Stay | Predicted Churn |
+| Actual / Predicted | Predicted Stay | Predicted Churn |
 |---|---:|---:|
 | Actual Stay | 1292 | 301 |
 | Actual Churn | 100 | 307 |
 
-The model identifies approximately 75% of the actual churn cases in the test dataset.
+### Evaluation Insights
 
-Class weighting helped improve churn detection, although it also increased false-positive predictions.
+- The model achieved approximately **79.95% test accuracy**.
+- The ROC-AUC score of **0.8580** indicates its ability to distinguish between the two classes.
+- Churn recall of **0.75** means the model identified 75% of actual churn cases in the test dataset.
+- Churn precision of **0.50** indicates that half of the customers predicted to leave actually left in the test dataset.
+- Class weighting improved churn detection but also increased false-positive predictions.
 
 ### Training Visualizations
+
+The following graphs show the model's training and validation performance.
 
 #### Model Accuracy
 
@@ -126,41 +193,60 @@ Class weighting helped improve churn detection, although it also increased false
 
 ![Model Loss](loss_plot.png)
 
-## Prediction System
+These visualizations help observe how the model's accuracy and loss changed during training.
 
-A separate prediction module was developed to make predictions using the trained ANN model.
+## 🔮 Prediction System
+
+A separate prediction module was developed in `prediction.py`.
 
 The prediction system:
 
 - Loads the trained ANN model.
-- Loads the saved encoders and scaler.
-- Accepts customer details as input.
-- Applies the same preprocessing steps used during training.
-- Predicts the probability of customer churn.
+- Loads the saved Label Encoder, One-Hot Encoder, and StandardScaler.
+- Accepts customer information as input.
+- Applies the same preprocessing transformations used during training.
+- Generates a churn probability.
+- Classifies the customer based on a 50% decision threshold.
 
-## Streamlit Web Application
+**Classification Logic:**
 
-A Streamlit application was created to allow users to enter customer details and view the model's churn prediction.
+| Churn Probability | Prediction |
+|---|---|
+| Below 50% | Likely to Stay |
+| 50% or Above | Likely to Leave |
+
+## 🌐 Streamlit Web Application
+
+An interactive web application was developed using Streamlit.
+
+Users can enter customer details and receive:
+
+- Estimated churn probability
+- Customer churn classification
+- Probability progress indicator
+- Prediction details
 
 ### Run the Application Locally
 
-1. Clone the repository:
+**1. Clone the repository**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Bank-Customer-Churn-Prediction-ANN.git
+git clone https://github.com/skhumera0202/Bank-Customer-Churn-Prediction-ANN.git
 ```
 
-2. Navigate to the project directory:
+**2. Navigate to the project directory**
 
 ```bash
 cd Bank-Customer-Churn-Prediction-ANN
 ```
 
-3. Create and activate a virtual environment:
+**3. Create a virtual environment**
 
 ```bash
 python -m venv venv
 ```
+
+**4. Activate the virtual environment**
 
 Windows PowerShell:
 
@@ -168,26 +254,41 @@ Windows PowerShell:
 .\venv\Scripts\Activate.ps1
 ```
 
-4. Install dependencies:
+**5. Install the dependencies**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-5. Run the Streamlit application:
+**6. Download the dataset**
+
+Download the dataset from the [original source](https://github.com/pdt0208/Banking-Churn-Modelling/blob/main/Churn_Modelling.csv).
+
+Place the CSV file inside a `data` folder using this path:
+
+```text
+data/Churn_Modelling.csv
+```
+
+**7. Run the Streamlit application**
 
 ```bash
 python -m streamlit run app.py
 ```
 
-The application will open in your browser at:
+The application will be available at:
 
-`http://localhost:8501`
+```text
+http://localhost:8501
+```
 
-## Project Structure
+## 📁 Project Structure
 
 ```text
 Bank-Customer-Churn-Prediction-ANN/
+│
+├── data/
+│   └── Churn_Modelling.csv
 │
 ├── app.py
 ├── data_exploration.py
@@ -210,34 +311,45 @@ Bank-Customer-Churn-Prediction-ANN/
 └── README.md
 ```
 
-The original dataset and processed training arrays are excluded from version control.
+**Note:** The original dataset, virtual environment, processed NumPy arrays, and training history are excluded from version control.
 
-## Key Learnings
+## 💡 Key Learnings
 
 Through this project, I gained practical experience with:
 
-- Building an ANN classification model.
-- Performing data preprocessing and feature encoding.
-- Applying feature scaling.
-- Understanding class imbalance and class weighting.
+- Building an Artificial Neural Network for binary classification.
+- Performing data exploration and preprocessing.
+- Applying Label Encoding and One-Hot Encoding.
+- Understanding feature scaling.
+- Handling class imbalance using class weighting.
 - Training and evaluating neural networks.
-- Using Early Stopping to help control overfitting.
-- Saving and loading trained models.
-- Building an interactive application using Streamlit.
+- Understanding precision, recall, F1-score, and ROC-AUC.
+- Using Early Stopping during model training.
+- Saving and loading trained models and preprocessing objects.
+- Building an interactive machine learning application using Streamlit.
 
-## Future Improvements
+## 🚀 Future Improvements
 
 - Experiment with different hidden layers and neuron configurations.
 - Perform hyperparameter tuning.
-- Improve churn prediction performance.
+- Explore additional approaches to improve churn detection.
 - Deploy the Streamlit application online.
 
-## Disclaimer
+## ⚠️ Disclaimer
 
-The predictions are model estimates based on the input customer information. They are not guarantees of actual customer behavior.
+The predictions generated by this application are model-based estimates using the supplied customer information. They do not guarantee actual customer behaviour and should not be treated as definitive banking decisions.
 
-## Author
+## 👩‍💻 Author
 
 **Humera Shaikh**
 
-GitHub: https://github.com/skhumera0202
+BCA Graduate | Aspiring Machine Learning Engineer
+
+- **GitHub:** [skhumera0202](https://github.com/skhumera0202)
+- **Project Repository:** [Bank Customer Churn Prediction using ANN](https://github.com/skhumera0202/Bank-Customer-Churn-Prediction-ANN)
+
+---
+
+<p align="center">
+  If you find this project interesting, feel free to explore the repository!
+</p>
