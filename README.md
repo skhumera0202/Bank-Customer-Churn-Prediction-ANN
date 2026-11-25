@@ -73,7 +73,8 @@ The objective is to develop a binary classification model that predicts customer
 - Target Column: `Exited`
 - Problem Type: Binary Classification
 
-**Dataset Source:**  
+**Dataset Source:**
+
 [Bank Customer Churn Modelling Dataset](https://github.com/pdt0208/Banking-Churn-Modelling/blob/main/Churn_Modelling.csv)
 
 The dataset contains customer demographic and banking information used to train the ANN model.
@@ -226,6 +227,16 @@ Users can enter customer details and receive:
 - Probability progress indicator
 - Prediction details
 
+### Application Screenshots
+
+#### 1. Application Home Page
+
+![Application Home Page](screenshots/application_home.png)
+
+#### 2. Customer Churn Prediction Result
+
+![Prediction Result](screenshots/prediction_result.png)
+
 ### Run the Application Locally
 
 **1. Clone the repository**
@@ -289,6 +300,10 @@ Bank-Customer-Churn-Prediction-ANN/
 │
 ├── data/
 │   └── Churn_Modelling.csv
+│
+├── screenshots/
+│   ├── application_home.png
+│   └── prediction_result.png
 │
 ├── app.py
 ├── data_exploration.py
