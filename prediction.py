@@ -1,31 +1,26 @@
 
-
-import joblib
 import numpy as np
-import tensorflow as tf
 import pandas as pd
+import tensorflow as tf
+import joblib
 
-# ==================================================
-# 1. Load the trained ANN model
-# ==================================================
+
+# ==========================================
+# 1. LOAD MODEL AND PREPROCESSING OBJECTS
+# ==========================================
 
 model = tf.keras.models.load_model(
-    "ann_model.keras",
+    "ann_model.h5",
     compile=False
 )
 
-# ==================================================
-# 2. Load saved preprocessing objects
-# ==================================================
-
-label_encoder = joblib.load("label_encoder.pkl")
-one_hot_encoder = joblib.load("one_hot_encoder.pkl")
 scaler = joblib.load("scaler.pkl")
+encoder = joblib.load("one_hot_encoder.pkl")
 
 
-# ==================================================
-# 3. Create prediction function
-# ==================================================
+# ==========================================
+# 2. CUSTOMER CHURN PREDICTION FUNCTION
+# ==========================================
 
 def predict_churn(
     credit_score,
@@ -40,8 +35,19 @@ def predict_churn(
     estimated_salary
 ):
 
-    # Create a DataFrame for the new customer
-    customer_data = pd.DataFrame([{
+    # Convert gender into numeric format
+    if isinstance(gender, str):
+        gender = gender.strip().lower()
+
+        if gender == "male":
+            gender = 1
+        elif gender == "female":
+            gender = 0
+        else:
+            raise ValueError("Gender must be Male or Female.")
+
+    # Create customer input dataframe
+    input_data = pd.DataFrame([{
         "CreditScore": credit_score,
         "Gender": gender,
         "Age": age,
@@ -54,86 +60,81 @@ def predict_churn(
         "Geography": geography
     }])
 
-    # Encode Gender
-    customer_data["Gender"] = label_encoder.transform(
-        customer_data["Gender"]
+    # ======================================
+    # 3. ENCODE GEOGRAPHY
+    # ======================================
+
+    encoded_data = encoder.transform(
+        input_data[["Geography"]]
     )
 
-    # Encode Geography
-    geo_encoded = one_hot_encoder.transform(
-        customer_data[["Geography"]]
-    )
-
-    geo_columns = one_hot_encoder.get_feature_names_out(
+    encoded_columns = encoder.get_feature_names_out(
         ["Geography"]
     )
 
-    geo_df = pd.DataFrame(
-        geo_encoded,
-        columns=geo_columns
+    encoded_df = pd.DataFrame(
+        encoded_data,
+        columns=encoded_columns,
+        index=input_data.index
     )
 
     # Remove original Geography column
-    customer_data = customer_data.drop(
-        "Geography",
+    input_data = input_data.drop(
+        columns=["Geography"]
+    )
+
+    # ======================================
+    # 4. COMBINE AND ORDER FEATURES
+    # ======================================
+
+    final_input = pd.concat(
+        [input_data, encoded_df],
         axis=1
     )
 
-    # Combine encoded Geography features
-    customer_data = pd.concat(
-        [customer_data, geo_df],
-        axis=1
-    )
-
-    # Ensure exact training feature order
-    feature_order = [
-        "CreditScore",
-        "Gender",
-        "Age",
-        "Tenure",
-        "Balance",
-        "NumOfProducts",
-        "HasCrCard",
-        "IsActiveMember",
-        "EstimatedSalary",
-        "Geography_France",
-        "Geography_Germany",
-        "Geography_Spain"
+    final_input = final_input[
+        scaler.feature_names_in_
     ]
 
-    customer_data = customer_data[feature_order]
+    # ======================================
+    # 5. SCALE INPUT
+    # ======================================
 
-    # Scale customer data
-    customer_scaled = scaler.transform(customer_data)
+    scaled_input = scaler.transform(final_input)
 
-    # Make prediction
+    # ======================================
+    # 6. ANN PREDICTION
+    # ======================================
+
     probability = float(
-        model.predict(customer_scaled, verbose=0)[0][0]
+        model.predict(
+            scaled_input,
+            verbose=0
+        )[0][0]
     )
 
-    # Classification threshold
-    threshold = 0.5
+    prediction = 1 if probability >= 0.5 else 0
 
-    if probability >= threshold:
-        prediction = "Customer is likely to leave the bank."
+    if prediction == 1:
+        result = "Customer is likely to leave the bank."
     else:
-        prediction = "Customer is likely to stay with the bank."
+        result = "Customer is likely to stay with the bank."
 
-    return prediction, probability
+    return result, probability
 
 
-# ==================================================
-# 4. Test with one sample customer
-# ==================================================
+# ==========================================
+# 7. SAMPLE PREDICTION
+# ==========================================
 
 if __name__ == "__main__":
 
     result, probability = predict_churn(
-        credit_score=650,
+        credit_score=600,
         geography="France",
-        gender="Female",
-        age=35,
-        tenure=5,
+        gender="Male",
+        age=40,
+        tenure=3,
         balance=60000,
         num_of_products=2,
         has_cr_card=1,
